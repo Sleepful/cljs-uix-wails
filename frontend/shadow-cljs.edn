@@ -1,0 +1,12 @@
+{:deps true
+ :dev-http {8080 "public"}
+ :builds {:app
+          {:target :browser
+           :output-dir "public/build/js"
+           :modules {:main {:entries [app.core]
+                            :init-fn app.core/init}}
+           :devtools {:preloads [uix.preload devtools.preload]}
+           :compiler-options {:source-map true
+                              :source-map-include-sources-content true
+                              :source-map-detail-level :all}}}}
+
