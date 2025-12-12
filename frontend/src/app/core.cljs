@@ -9,7 +9,8 @@
    [app.reframe.fx]
    [app.reframe.db]
    [app.routes :refer [route-provider use-route]]
-   [re-frame.core :as rf]))
+   [re-frame.core :as rf]
+   ["../wailsjs/go/main/App.js" :refer [Greet SetTitle]]))
 
 (defui header []
   ($ :header.app-header
@@ -79,20 +80,36 @@
         "×")))
 
 (defui app []
-  (let [todos (uix.rf/use-subscribe [:app/todos])]
-    ($ :div {:style {:display "flex" :flex-direction "column"}}
-       ($ :.app
-          ($ header)
-          ($ text-field {:on-add-todo #(rf/dispatch [:todo/add %])})
-          (for [[created-at todo] todos]
-            ($ todo-item
-               (assoc todo :created-at created-at
-                      :key created-at
-                      :on-remove-todo #(rf/dispatch [:todo/remove %])
-                      :on-set-todo-text #(rf/dispatch [:todo/set-text %1 %2]))))
-          ($ footer))
-         ; NOTE: links need to use `#/` as their prefix for Electron
-       ($ :a {:style {:padding "12px"} :href "#/about"} "About link"))))
+  (let [todos (uix.rf/use-subscribe [:app/todos])
+        [greet set-greet] (uix/use-state "Hello...")]
+    (uix/use-effect (fn [] (.then (Greet "User") (fn [greet] (set-greet greet)))) [])
+    ($ :div {:style {:display "flex" :class "space-x-2"}}
+       ($ :div
+          ($ :div greet)
+          ($ :label
+             {:for "test"}
+             "This changes the window title with the Wails Go method:"
+             ($ :input
+                {:id "test",
+                 :type "text",
+                 :placeholder "type here",
+                 :class "input"
+                 :on-change (fn [^js e]
+                             (SetTitle (.. e -target -value)))}))) 
+          
+       ($ :div {:style {:display "flex" :flex-direction "column"}}
+          ($ :.app
+             ($ header)
+             ($ text-field {:on-add-todo #(rf/dispatch [:todo/add %])})
+             (for [[created-at todo] todos]
+               ($ todo-item
+                  (assoc todo :created-at created-at
+                         :key created-at
+                         :on-remove-todo #(rf/dispatch [:todo/remove %])
+                         :on-set-todo-text #(rf/dispatch [:todo/set-text %1 %2]))))
+             ($ footer))
+          ; NOTE: links need to use `#/` as their prefix for Wails
+          ($ :a {:style {:padding "12px"} :href "#/about"} "About link")))))
 
 (defui app-with-router []
   (let [{:keys [view]} (use-route)]
@@ -102,7 +119,7 @@
   ($ :div.prose
      {:style {:background "white"}}
      ($ :h1 "about page")
-     ; NOTE: links need to use `#/` as their prefix for Electron
+     ; NOTE: links need to use `#/` as their prefix for Wails
      ($ :a {:href "#/"} "Home page")))
 
 (def routes
@@ -140,8 +157,4 @@
    root))
 
 (defn ^:export init []
-  (-> (js/document.getElementById "test")
-      (.addEventListener "input"
-                         (fn [^js e]
-                           (js/window.electronAPI.setTitle (-> e .-target .-value)))))
   (render))

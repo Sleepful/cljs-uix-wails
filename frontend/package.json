@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "run-p dev-server dev-tailwind",
     "dev-server": "shadow-cljs -A:dev watch app",
-    "dev-tailwind": "npx @tailwindcss/cli -i ./src/app/core.css -o ./public/build/css/main.css --watch",
+    "dev-tailwind": "npx @tailwindcss/cli -i ./src/app/core.css -o ./public/build/css/main.css --watch=always",
     "build": "run-p build-tailwind build-server ",
     "build-server": "shadow-cljs -A:dev compile app",
     "build-tailwind": "npx @tailwindcss/cli -i ./src/app/core.css -o ./public/build/css/main.css"
