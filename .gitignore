@@ -1,3 +1,5 @@
 build/bin
 node_modules
 frontend/dist
+.clj-kondo/.cache
+.lsp

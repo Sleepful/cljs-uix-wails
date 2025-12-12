@@ -83,7 +83,7 @@
   (let [todos (uix.rf/use-subscribe [:app/todos])
         [greet set-greet] (uix/use-state "Hello...")]
     (uix/use-effect (fn [] (.then (Greet "User") (fn [greet] (set-greet greet)))) [])
-    ($ :div {:style {:display "flex" :class "space-x-2"}}
+    ($ :div {:style {:display "flex"} :class "p-6 space-x-2 bg-blue-100"}
        ($ :div
           ($ :div greet)
           ($ :label
@@ -95,8 +95,8 @@
                  :placeholder "type here",
                  :class "input"
                  :on-change (fn [^js e]
-                             (SetTitle (.. e -target -value)))}))) 
-          
+                              (SetTitle (.. e -target -value)))})))
+
        ($ :div {:style {:display "flex" :flex-direction "column"}}
           ($ :.app
              ($ header)
