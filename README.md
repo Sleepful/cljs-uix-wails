@@ -2,7 +2,7 @@
 
 Similar to: https://github.com/Sleepful/cljs-uix-electron
 
-This one uses Wails instead of Electron.
+This one uses [Wails](https://wails.io/) instead of Electron.
 
 ClojureScript is configured with:
 
