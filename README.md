@@ -1,3 +1,23 @@
+# Wails + ClojureScript starter
+
+Similar to: https://github.com/Sleepful/cljs-uix-electron
+
+This one uses Wails instead of Electron.
+
+ClojureScript is configured with:
+
+- Uix (React)
+- Reitit routing (with Hash routes to work properly within the local webview)
+- Reframe from the Uix starter
+
+Run with `wails dev` on the root directory.
+
+Requires installations for:
+
+- Npm
+- Clojure
+- Go
+
 # README
 
 ## About
