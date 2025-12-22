@@ -10,13 +10,45 @@ ClojureScript is configured with:
 - Reitit routing (with Hash routes to work properly within the local webview)
 - Reframe from the Uix starter
 
-Run with `wails dev` on the root directory.
-
 Requires installations for:
 
 - Npm
-- Clojure
 - Go
+
+To run use two separate commands. One for running wails and another one for running the CLJS server.
+
+## Frontend
+
+First terminal command:
+```
+cd frontend
+npm i
+npm run dev # starts shadowcljs watch server
+```
+
+## Wails server
+
+Second terminal command, it will serve files from the first watch server
+
+```
+wails dev
+```
+
+# Alternative way of running the dev command 
+
+It is possible to use a single command instead of two, but it presents some issues where live reloading might not work until the browser is refreshed.
+
+To use a single command one would add to `wails.json`:
+
+```
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+```
+
+Run with `wails dev` on the root directory.
+
+I would recommend against this as of the time of writing.
 
 # README
 
